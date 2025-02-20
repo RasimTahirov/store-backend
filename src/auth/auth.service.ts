@@ -8,6 +8,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { RegisterDto } from './dto/register.dto';
 import * as argon2 from 'argon2';
 import { JwtService } from '@nestjs/jwt';
+import { Response } from 'express';
 
 @Injectable()
 export class AuthService {
@@ -40,7 +41,7 @@ export class AuthService {
     return user;
   }
 
-  public async login(email: string, password: string) {
+  public async login(email: string, password: string, res: Response) {
     const user = await this.prismaService.user.findUnique({ where: { email } });
 
     if (!user) throw new UnauthorizedException('Неверный логин или пароль');
@@ -52,6 +53,12 @@ export class AuthService {
     const payload = { email: user.email, id: user.id };
     const token = this.jwtService.sign(payload);
 
-    return { token, user };
+    res.cookie('access_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    });
+
+    return { user };
   }
 }
