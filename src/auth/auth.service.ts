@@ -9,6 +9,7 @@ import { RegisterDto } from './dto/register.dto';
 import * as argon2 from 'argon2';
 import { JwtService } from '@nestjs/jwt';
 import { Response } from 'express';
+import { ONE_MONTH } from './utils/date.utils';
 
 @Injectable()
 export class AuthService {
@@ -35,6 +36,7 @@ export class AuthService {
         surname: dto.surname,
         email: dto.email,
         password: hashedPassword,
+        role: 'USER',
       },
     });
 
@@ -50,15 +52,19 @@ export class AuthService {
 
     if (!existsPassword) throw new UnauthorizedException('Неверный логин или пароль');
 
-    const payload = { email: user.email, id: user.id };
+    const payload = { email: user.email, id: user.id, role: user.role };
     const token = this.jwtService.sign(payload);
 
     res.cookie('access_token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      maxAge: 30 * 24 * 60 * 60 * 1000,
+      maxAge: ONE_MONTH,
     });
 
     return { user };
+  }
+
+  public test() {
+    return 'test';
   }
 }

@@ -4,9 +4,7 @@ export interface IUser {
   surname: string;
   email: string;
   password: string;
+  role: string;
 }
 
-export interface JwtPayload {
-  id: string;
-  email: string;
-}
+export type JwtPayload = Pick<IUser, 'id' | 'email' | 'role'>;
