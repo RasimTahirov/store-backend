@@ -26,7 +26,7 @@ export class AuthController {
 
   @Get('test')
   @UseGuards(JwtAuthGuard, RoleGuard)
-  @RoleDecorator(Role.ADMIN)
+  @RoleDecorator(Role.USER)
   test() {
     return this.authService.test();
   }
