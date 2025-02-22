@@ -8,3 +8,8 @@ export interface IUser {
 }
 
 export type JwtPayload = Pick<IUser, 'id' | 'email' | 'role'>;
+
+export enum Role {
+  ADMIN = 'ADMIN',
+  USER = 'USER',
+}

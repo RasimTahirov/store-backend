@@ -3,6 +3,9 @@ import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { Response } from 'express';
 import { JwtAuthGuard } from './guard/jwt-auth.guard';
+import { RoleGuard } from './guard/role.guard';
+import { RoleDecorator } from './decorators/role.decorator';
+import { Role } from './types/type';
 
 @Controller('auth')
 export class AuthController {
@@ -22,7 +25,8 @@ export class AuthController {
   }
 
   @Get('test')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @RoleDecorator(Role.ADMIN)
   test() {
     return this.authService.test();
   }
