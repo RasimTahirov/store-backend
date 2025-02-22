@@ -1,15 +1,12 @@
-import { Controller, Post, Query, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
 import { AdminService } from './admin.service';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 import { PaginationDto } from 'src/pagination/dto/pagination.dto';
 import { PaginationService } from 'src/pagination/pagination.service';
-import { RoleGuard } from 'src/auth/guard/role.guard';
-import { RoleDecorator } from 'src/auth/decorators/role.decorator';
-import { Role } from 'src/auth/types/type';
 
 @Controller('admin')
-@UseGuards(JwtAuthGuard, RoleGuard)
-@RoleDecorator(Role.ADMIN)
+@UseGuards(JwtAuthGuard)
+// @RoleDecorator(Role.ADMIN)
 export class AdminController {
   constructor(
     private readonly adminService: AdminService,
@@ -26,5 +23,10 @@ export class AdminController {
       paginationDto.page,
       paginationDto.limit
     );
+  }
+
+  @Get('create/category')
+  async createCategory(@Body() body: { name: string }) {
+    return this.adminService.createCategory(body.name);
   }
 }
