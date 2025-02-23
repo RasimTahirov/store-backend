@@ -1,6 +1,7 @@
 import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
 import { Role } from 'src/auth/types/type';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateProductDto } from './dto/createProduct.dto';
 
 @Injectable()
 export class AdminService {
@@ -45,8 +46,22 @@ export class AdminService {
     const newCategory = await this.prismaService.category.create({
       data: { name },
     });
-    console.log('newCategory', newCategory);
 
     return newCategory;
+  }
+
+  public async createProduct(dto: CreateProductDto) {
+    const product = await this.prismaService.product.create({
+      data: {
+        title: dto.title,
+        description: dto.description,
+        price: dto.price,
+        size: dto.size,
+        color: dto.color,
+        categoryId: dto.category,
+      },
+    });
+
+    return product;
   }
 }

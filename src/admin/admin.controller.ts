@@ -6,6 +6,7 @@ import { PaginationService } from 'src/pagination/pagination.service';
 import { Role } from 'src/auth/types/type';
 import { RoleDecorator } from 'src/auth/decorators/role.decorator';
 import { RoleGuard } from 'src/auth/guard/role.guard';
+import { CreateProductDto } from './dto/createProduct.dto';
 
 @Controller('admin')
 @UseGuards(JwtAuthGuard, RoleGuard)
@@ -38,5 +39,11 @@ export class AdminController {
   @RoleDecorator(Role.ADMIN)
   async createCategory(@Body() body: { name: string }) {
     return this.adminService.createCategory(body.name);
+  }
+
+  @Get('create/product')
+  @RoleDecorator(Role.ADMIN)
+  async createProduct(@Body() dto: CreateProductDto) {
+    return this.adminService.createProduct(dto);
   }
 }
