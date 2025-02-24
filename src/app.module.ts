@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { AuthModule } from './auth/auth.module';
 import { AdminModule } from './admin/admin.module';
 import { PaginationModule } from './pagination/pagination.module';
+import { S3Module } from './s3/s3.module';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { PaginationModule } from './pagination/pagination.module';
     AuthModule,
     AdminModule,
     PaginationModule,
+    S3Module,
   ],
 })
 export class AppModule {}

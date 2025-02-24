@@ -58,6 +58,7 @@ model Product {
   price       Float
   size        Size
   color       String
+  image       String[]
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
