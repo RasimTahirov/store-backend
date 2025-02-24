@@ -1,4 +1,4 @@
-import { Size } from '../types/type';
+import { Gender, Size } from '../types/type';
 
 export class CreateProductDto {
   title: string;
@@ -6,5 +6,6 @@ export class CreateProductDto {
   price: string;
   size: Size;
   color: string;
+  gender: Gender;
   category: string;
 }

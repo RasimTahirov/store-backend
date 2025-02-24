@@ -71,10 +71,31 @@ export class AdminService {
         size: dto.size,
         color: dto.color,
         categoryId: dto.category,
+        gender: dto.gender,
         image: imageUrls,
       },
     });
 
     return product;
+  }
+
+  public async getAllProducts() {
+    const product = await this.prismaService.product.findMany();
+
+    return product;
+  }
+
+  public async deleteProduct(id: string) {
+    try {
+      await this.prismaService.product.delete({
+        where: {
+          id,
+        },
+      });
+
+      return { message: 'Товар удалён' };
+    } catch {
+      throw new BadRequestException('Товар не найден');
+    }
   }
 }

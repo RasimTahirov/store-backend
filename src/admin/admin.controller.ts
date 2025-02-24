@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Post,
@@ -28,7 +29,7 @@ export class AdminController {
     private readonly paginationService: PaginationService
   ) {}
 
-  @Post('users')
+  @Get('users')
   @RoleDecorator(Role.ADMIN)
   async getAllUser(@Query() paginationDto: PaginationDto) {
     const data = await this.adminService.getAllUser();
@@ -47,7 +48,7 @@ export class AdminController {
     return this.adminService.upadtedRole(id, body.role);
   }
 
-  @Get('create/category')
+  @Post('create/category')
   @RoleDecorator(Role.ADMIN)
   async createCategory(@Body() body: { name: string }) {
     return this.adminService.createCategory(body.name);
@@ -61,5 +62,24 @@ export class AdminController {
     @UploadedFiles() files: Express.Multer.File[]
   ) {
     return this.adminService.createProduct(dto, files);
+  }
+
+  @Get('products')
+  @RoleDecorator(Role.ADMIN)
+  async getAllProducts(@Query() paginationDto: PaginationDto) {
+    const data = await this.adminService.getAllProducts();
+    const totalCount = data.length;
+    return this.paginationService.paginate(
+      data,
+      totalCount,
+      paginationDto.page,
+      paginationDto.limit
+    );
+  }
+
+  @Delete('product/:id')
+  @RoleDecorator(Role.ADMIN)
+  async deleteProduct(@Param('id') id: string) {
+    return this.adminService.deleteProduct(id);
   }
 }

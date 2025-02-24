@@ -50,6 +50,12 @@ enum Size {
   XXL
 }
 
+enum Gender {
+  MALE
+  FEMALE
+  UNISEX
+}
+
 model Product {
   id String @id @default(uuid())
 
@@ -58,6 +64,7 @@ model Product {
   price       Float
   size        Size
   color       String
+  gender      Gender
   image       String[]
 
   createdAt DateTime @default(now()) @map("created_at")

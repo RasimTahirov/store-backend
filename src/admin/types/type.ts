@@ -6,3 +6,9 @@ export enum Size {
   XL = 'XL',
   XXL = 'XXL',
 }
+
+export enum Gender {
+  MALE = 'MALE',
+  FEMALE = 'FEMALE',
+  UNISEX = 'UNISEX',
+}
