@@ -11,7 +11,6 @@ export class PaginationService {
     return {
       data: paginatedData,
       meta: {
-        totalCount,
         totalPages,
         currentPage: page,
         totalCurrentItem: paginatedData.length,

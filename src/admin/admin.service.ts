@@ -40,6 +40,24 @@ export class AdminService {
     return { message: 'Роль пользователя обновлена', update };
   }
 
+  public async deleteUser(id: string) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!user) throw new BadRequestException('Пользователь не найден');
+
+    await this.prismaService.user.delete({
+      where: {
+        id,
+      },
+    });
+
+    return { message: 'Пользователь удалён' };
+  }
+
   public async createCategory(name: string) {
     const category = await this.prismaService.category.findFirst({
       where: { name },
