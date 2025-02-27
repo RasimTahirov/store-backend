@@ -7,6 +7,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 model User {
   id String @id @default(uuid())
 
@@ -23,7 +28,50 @@ model User {
   @@map("users")
 }
 
-enum Role {
-  USER
-  ADMIN
+model Category {
+  id String @id @default(uuid())
+
+  name String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  products Product[]
+
+  @@map("categories")
+}
+
+enum Size {
+  XS
+  S
+  M
+  L
+  XL
+  XXL
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  UNISEX
+}
+
+model Product {
+  id String @id @default(uuid())
+
+  title       String
+  description String
+  price       Float
+  size        Size
+  color       String
+  gender      Gender
+  image       String[]
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  Category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  @@map("products")
 }
