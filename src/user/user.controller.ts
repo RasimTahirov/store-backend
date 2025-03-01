@@ -22,4 +22,9 @@ export class UserController {
   getCategoryById(@Param('id') id: string) {
     return this.userService.getCategoryById(id);
   }
+
+  @Get('status')
+  checkAuthStatus() {
+    return this.userService.checkAuthStatus();
+  }
 }

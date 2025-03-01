@@ -40,4 +40,8 @@ export class UserService {
 
     return category;
   }
+
+  public checkAuthStatus() {
+    return true;
+  }
 }
