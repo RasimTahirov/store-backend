@@ -59,12 +59,36 @@ export class AuthService {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       maxAge: ONE_MONTH,
-    });
+    }); //Сделать рефреш токен
 
-    return { user };
+    res.cookie(
+      'user',
+      { id: user.id, name: user.name, surname: user.surname, email: user.email, role: user.role },
+      {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        maxAge: ONE_MONTH,
+      }
+    );
+
+    return { message: 'Успещная авторизация' };
   }
 
   public test() {
     return 'test';
+  }
+
+  public logout(res: Response) {
+    res.clearCookie('access_token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
+
+    res.clearCookie('user', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
+
+    return { message: 'Успешный выход' };
   }
 }

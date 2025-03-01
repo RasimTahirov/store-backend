@@ -32,14 +32,19 @@ export class AdminController {
   @Get('users')
   @RoleDecorator(Role.ADMIN)
   async getAllUser(@Query() paginationDto: PaginationDto) {
+    const page = Number(paginationDto.page);
+    const limit = Number(paginationDto.limit);
+
     const data = await this.adminService.getAllUser();
     const totalCount = data.length;
-    return this.paginationService.paginate(
-      data,
-      totalCount,
-      paginationDto.page,
-      paginationDto.limit
-    );
+
+    return this.paginationService.paginate(data, totalCount, page, limit);
+  }
+
+  @Delete('user/:id')
+  @RoleDecorator(Role.ADMIN)
+  async deleteUser(@Param('id') id: string) {
+    return this.adminService.deleteUser(id);
   }
 
   @Put('user/update/:id')
@@ -50,8 +55,8 @@ export class AdminController {
 
   @Post('create/category')
   @RoleDecorator(Role.ADMIN)
-  async createCategory(@Body() body: { name: string }) {
-    return this.adminService.createCategory(body.name);
+  async createCategory(@Body() body: { name: string; url: string }) {
+    return this.adminService.createCategory(body.name, body.url);
   }
 
   @Post('create/product')

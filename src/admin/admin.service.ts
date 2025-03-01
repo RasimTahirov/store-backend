@@ -40,7 +40,25 @@ export class AdminService {
     return { message: 'Роль пользователя обновлена', update };
   }
 
-  public async createCategory(name: string) {
+  public async deleteUser(id: string) {
+    const user = await this.prismaService.user.findUnique({
+      where: {
+        id,
+      },
+    });
+
+    if (!user) throw new BadRequestException('Пользователь не найден');
+
+    await this.prismaService.user.delete({
+      where: {
+        id,
+      },
+    });
+
+    return { message: 'Пользователь удалён' };
+  }
+
+  public async createCategory(name: string, url: string) {
     const category = await this.prismaService.category.findFirst({
       where: { name },
     });
@@ -48,7 +66,10 @@ export class AdminService {
     if (category) throw new ConflictException(`Категория с названием ${name} уже существует`);
 
     const newCategory = await this.prismaService.category.create({
-      data: { name },
+      data: {
+        name,
+        url,
+      },
     });
 
     return newCategory;

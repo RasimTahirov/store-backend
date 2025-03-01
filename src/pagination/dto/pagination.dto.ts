@@ -1,17 +1,17 @@
 // pagination.dto.ts
 import { IsInt, IsOptional, Min } from 'class-validator';
-import { Transform } from 'class-transformer';
+import { Type } from 'class-transformer';
 
 export class PaginationDto {
   @IsOptional()
   @IsInt()
   @Min(1)
-  @Transform(({ value }) => parseInt(value, 10))
+  @Type(() => Number) // Преобразует строку в число, гарантируя тип number
   page: number = 1;
 
   @IsOptional()
   @IsInt()
   @Min(1)
-  @Transform(({ value }) => parseInt(value, 10))
+  @Type(() => Number) // То же для limit
   limit: number;
 }
