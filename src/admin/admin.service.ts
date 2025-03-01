@@ -58,7 +58,7 @@ export class AdminService {
     return { message: 'Пользователь удалён' };
   }
 
-  public async createCategory(name: string) {
+  public async createCategory(name: string, url: string) {
     const category = await this.prismaService.category.findFirst({
       where: { name },
     });
@@ -66,7 +66,10 @@ export class AdminService {
     if (category) throw new ConflictException(`Категория с названием ${name} уже существует`);
 
     const newCategory = await this.prismaService.category.create({
-      data: { name },
+      data: {
+        name,
+        url,
+      },
     });
 
     return newCategory;

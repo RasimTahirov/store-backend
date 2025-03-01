@@ -1,4 +1,4 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
@@ -16,5 +16,10 @@ export class UserController {
   @Get('categories')
   getAllCategory() {
     return this.userService.getAllCategory();
+  }
+
+  @Get('category/:id')
+  getCategoryById(@Param('id') id: string) {
+    return this.userService.getCategoryById(id);
   }
 }

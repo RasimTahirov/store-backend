@@ -21,4 +21,23 @@ export class UserService {
 
     return categories;
   }
+
+  async getCategoryById(url: string) {
+    const category = await this.prismaService.category.findUnique({
+      where: {
+        url,
+      },
+      include: {
+        products: {
+          select: {
+            title: true,
+          },
+        },
+      },
+    });
+
+    if (!category) throw new BadRequestException('Категория не найдена');
+
+    return category;
+  }
 }

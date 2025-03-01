@@ -55,8 +55,8 @@ export class AdminController {
 
   @Post('create/category')
   @RoleDecorator(Role.ADMIN)
-  async createCategory(@Body() body: { name: string }) {
-    return this.adminService.createCategory(body.name);
+  async createCategory(@Body() body: { name: string; url: string }) {
+    return this.adminService.createCategory(body.name, body.url);
   }
 
   @Post('create/product')

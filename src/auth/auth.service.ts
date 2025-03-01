@@ -77,4 +77,18 @@ export class AuthService {
   public test() {
     return 'test';
   }
+
+  public logout(res: Response) {
+    res.clearCookie('access_token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
+
+    res.clearCookie('user', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+    });
+
+    return { message: 'Успешный выход' };
+  }
 }

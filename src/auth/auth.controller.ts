@@ -24,6 +24,12 @@ export class AuthController {
     return res.json(result);
   }
 
+  @Post('logout')
+  logout(@Res() res: Response) {
+    const result = this.authService.logout(res);
+    return res.json(result);
+  }
+
   @Get('test')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @RoleDecorator(Role.USER)
