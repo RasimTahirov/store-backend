@@ -31,8 +31,9 @@ model User {
 model Category {
   id String @id @default(uuid())
 
-  name String
-  url  String @unique
+  name   String
+  url    String @unique
+  gender Gender
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

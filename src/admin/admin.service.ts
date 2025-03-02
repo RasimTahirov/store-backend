@@ -3,6 +3,7 @@ import { Role } from 'src/auth/types/type';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProductDto } from './dto/createProduct.dto';
 import { S3Service } from 'src/s3/s3.service';
+import { createCategoryDto } from './dto/createCategory.dto';
 
 @Injectable()
 export class AdminService {
@@ -58,17 +59,20 @@ export class AdminService {
     return { message: 'Пользователь удалён' };
   }
 
-  public async createCategory(name: string, url: string) {
+  public async createCategory(dto: createCategoryDto) {
     const category = await this.prismaService.category.findFirst({
-      where: { name },
+      where: {
+        AND: [{ name: dto.name }, { gender: dto.gender }],
+      },
     });
 
-    if (category) throw new ConflictException(`Категория с названием ${name} уже существует`);
+    if (category) throw new ConflictException(`Категория с названием ${dto.name} уже существует`);
 
     const newCategory = await this.prismaService.category.create({
       data: {
-        name,
-        url,
+        name: dto.name,
+        url: dto.url,
+        gender: dto.gender,
       },
     });
 

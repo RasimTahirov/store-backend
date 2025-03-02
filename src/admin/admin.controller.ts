@@ -20,6 +20,7 @@ import { RoleDecorator } from 'src/auth/decorators/role.decorator';
 import { RoleGuard } from 'src/auth/guard/role.guard';
 import { CreateProductDto } from './dto/createProduct.dto';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { createCategoryDto } from './dto/createCategory.dto';
 
 @Controller('admin')
 @UseGuards(JwtAuthGuard, RoleGuard)
@@ -55,8 +56,8 @@ export class AdminController {
 
   @Post('create/category')
   @RoleDecorator(Role.ADMIN)
-  async createCategory(@Body() body: { name: string; url: string }) {
-    return this.adminService.createCategory(body.name, body.url);
+  async createCategory(@Body() dto: createCategoryDto) {
+    return this.adminService.createCategory(dto);
   }
 
   @Post('create/product')

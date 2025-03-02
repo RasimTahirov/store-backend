@@ -22,6 +22,26 @@ export class UserService {
     return categories;
   }
 
+  async getManCategories() {
+    const categories = await this.prismaService.category.findMany({
+      where: {
+        gender: 'MALE',
+      },
+    });
+
+    return categories;
+  }
+
+  async getWomanCategories() {
+    const categories = await this.prismaService.category.findMany({
+      where: {
+        gender: 'FEMALE',
+      },
+    });
+
+    return categories;
+  }
+
   async getCategoryById(url: string) {
     const category = await this.prismaService.category.findUnique({
       where: {
@@ -31,6 +51,12 @@ export class UserService {
         products: {
           select: {
             title: true,
+            description: true,
+            price: true,
+            size: true,
+            color: true,
+            gender: true,
+            image: true,
           },
         },
       },

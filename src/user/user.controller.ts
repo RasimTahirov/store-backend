@@ -18,6 +18,16 @@ export class UserController {
     return this.userService.getAllCategory();
   }
 
+  @Get('categories/man')
+  getManCategories() {
+    return this.userService.getManCategories();
+  }
+
+  @Get('categories/woman')
+  getWomanCategories() {
+    return this.userService.getWomanCategories();
+  }
+
   @Get('category/:id')
   getCategoryById(@Param('id') id: string) {
     return this.userService.getCategoryById(id);
