@@ -9,8 +9,6 @@ export class UserService {
   async getUserData(req: Request) {
     const user = await req.cookies['user'];
 
-    console.log('userData', user);
-
     if (!user) throw new BadRequestException('Нет данных');
 
     return user;

@@ -91,6 +91,13 @@ export class CartService {
       },
     });
 
-    return cart ? cart.CartItem : [];
+    const totalPrice = cart?.CartItem.reduce((total, item) => {
+      if (item.product && item.product.price) {
+        total += item.product.price * item.quantity;
+      }
+      return total;
+    }, 0);
+
+    return { cart: cart?.CartItem, totalPrice };
   }
 }
