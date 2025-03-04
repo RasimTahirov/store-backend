@@ -4,11 +4,11 @@ import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
 
 @Controller('user')
-@UseGuards(JwtAuthGuard)
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('data')
+  @UseGuards(JwtAuthGuard)
   getUserData(@Req() req: Request) {
     return this.userService.getUserData(req);
   }
@@ -33,7 +33,13 @@ export class UserController {
     return this.userService.getCategoryById(id);
   }
 
+  @Get('product/:id')
+  getProductById(@Param('id') id: string) {
+    return this.userService.getProductById(id);
+  }
+
   @Get('status')
+  @UseGuards(JwtAuthGuard)
   checkAuthStatus() {
     return this.userService.checkAuthStatus();
   }

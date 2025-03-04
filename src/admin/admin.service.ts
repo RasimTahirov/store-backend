@@ -97,7 +97,10 @@ export class AdminService {
         color: dto.color,
         categoryId: dto.category,
         gender: dto.gender,
-        image: imageUrls,
+        images: imageUrls,
+        compound: dto.compound,
+        country: dto.country,
+        care: dto.care,
       },
     });
 

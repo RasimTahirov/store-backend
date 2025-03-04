@@ -8,4 +8,7 @@ export class CreateProductDto {
   color: string;
   gender: Gender;
   category: string;
+  compound: string;
+  country: string;
+  care: string;
 }

@@ -50,13 +50,14 @@ export class UserService {
       include: {
         products: {
           select: {
+            id: true,
             title: true,
             description: true,
             price: true,
             size: true,
             color: true,
             gender: true,
-            image: true,
+            images: true,
           },
         },
       },
@@ -65,6 +66,16 @@ export class UserService {
     if (!category) throw new BadRequestException('Категория не найдена');
 
     return category;
+  }
+
+  async getProductById(productId: string) {
+    const product = await this.prismaService.product.findUnique({
+      where: {
+        id: productId,
+      },
+    });
+
+    return product;
   }
 
   public checkAuthStatus() {
