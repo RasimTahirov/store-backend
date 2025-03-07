@@ -1,11 +1,16 @@
-import { Controller, Get, Param, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, Query, Req, UseGuards } from '@nestjs/common';
 import { UserService } from './user.service';
 import { Request } from 'express';
 import { JwtAuthGuard } from 'src/auth/guard/jwt-auth.guard';
+import { PaginationDto } from 'src/pagination/dto/pagination.dto';
+import { PaginationService } from 'src/pagination/pagination.service';
 
 @Controller('user')
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly paginationService: PaginationService
+  ) {}
 
   @Get('data')
   @UseGuards(JwtAuthGuard)
@@ -29,8 +34,14 @@ export class UserController {
   }
 
   @Get('category/:id')
-  getCategoryById(@Param('id') id: string) {
-    return this.userService.getCategoryById(id);
+  async getCategoryById(@Param('id') id: string, @Query() paginationDto: PaginationDto) {
+    const page = Number(paginationDto.page);
+    const limit = Number(paginationDto.limit);
+
+    const data = await this.userService.getCategoryById(id);
+    const totalCount = data.products.length;
+
+    return this.paginationService.paginate(data.products, totalCount, page, limit);
   }
 
   @Get('product/:id')
