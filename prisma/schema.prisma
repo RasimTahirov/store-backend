@@ -81,7 +81,6 @@ model Product {
   categoryId String
 
   CartItem CartItem[]
-  Cart     Cart[]
 
   @@map("products")
 }
@@ -89,11 +88,8 @@ model Product {
 model Cart {
   id        String  @id @default(uuid())
   userId    String
-  productId String?
-  quantity  Int     @default(1)
 
   user    User     @relation(fields: [userId], references: [id])
-  product Product? @relation(fields: [productId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")

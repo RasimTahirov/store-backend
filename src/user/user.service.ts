@@ -6,7 +6,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async getUserData(req: Request) {
+  public async getUserData(req: Request) {
     const user = await req.cookies['user'];
 
     if (!user) throw new BadRequestException('Нет данных');
@@ -14,13 +14,13 @@ export class UserService {
     return user;
   }
 
-  async getAllCategory() {
+  public async getAllCategory() {
     const categories = await this.prismaService.category.findMany();
 
     return categories;
   }
 
-  async getManCategories() {
+  public async getManCategories() {
     const categories = await this.prismaService.category.findMany({
       where: {
         gender: 'MALE',
@@ -30,7 +30,7 @@ export class UserService {
     return categories;
   }
 
-  async getWomanCategories() {
+  public async getWomanCategories() {
     const categories = await this.prismaService.category.findMany({
       where: {
         gender: 'FEMALE',
@@ -40,7 +40,7 @@ export class UserService {
     return categories;
   }
 
-  async getCategoryById(url: string) {
+  public async getCategoryById(url: string) {
     const category = await this.prismaService.category.findUnique({
       where: {
         url,
@@ -66,7 +66,7 @@ export class UserService {
     return category;
   }
 
-  async getProductById(productId: string) {
+  public async getProductById(productId: string) {
     const product = await this.prismaService.product.findUnique({
       where: {
         id: productId,
@@ -78,5 +78,21 @@ export class UserService {
 
   public checkAuthStatus() {
     return true;
+  }
+
+  public async searchProductsByTitle(title: string) {
+    const products = await this.prismaService.product.findMany({
+      where: {
+        title: {
+          contains: title,
+          mode: 'insensitive',
+        },
+      },
+      include: {
+        Category: true,
+      },
+    });
+
+    return products;
   }
 }

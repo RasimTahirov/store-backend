@@ -54,4 +54,9 @@ export class UserController {
   checkAuthStatus() {
     return this.userService.checkAuthStatus();
   }
+
+  @Get('search')
+  async search(@Query('title') title: string) {
+    return this.userService.searchProductsByTitle(title);
+  }
 }
