@@ -6,6 +6,8 @@ import { AdminModule } from './admin/admin.module';
 import { PaginationModule } from './pagination/pagination.module';
 import { S3Module } from './s3/s3.module';
 import { UserModule } from './user/user.module';
+import { CartModule } from './cart/cart.module';
+import { PaymentModule } from './payment/payment.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { UserModule } from './user/user.module';
     PaginationModule,
     S3Module,
     UserModule,
+    CartModule,
+    PaymentModule,
   ],
 })
 export class AppModule {}

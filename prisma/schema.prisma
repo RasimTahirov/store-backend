@@ -25,6 +25,8 @@ model User {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
 
+  Cart Cart[]
+
   @@map("users")
 }
 
@@ -62,12 +64,15 @@ model Product {
   id String @id @default(uuid())
 
   title       String
-  description String
+  description String?
   price       Float
   size        Size
   color       String
   gender      Gender
-  image       String[]
+  images       String[]
+  compound    String
+  country     String
+  care        String
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -75,5 +80,36 @@ model Product {
   Category   Category @relation(fields: [categoryId], references: [id])
   categoryId String
 
+  CartItem CartItem[]
+
   @@map("products")
+}
+
+model Cart {
+  id        String  @id @default(uuid())
+  userId    String
+
+  user    User     @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  CartItem CartItem[]
+
+  @@map("carts")
+}
+
+model CartItem {
+  id        String @id @default(uuid())
+  cartId    String
+  productId String
+  quantity  Int    @default(1)
+
+  cart    Cart    @relation(fields: [cartId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("cart_items")
 }

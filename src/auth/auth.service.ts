@@ -74,10 +74,6 @@ export class AuthService {
     return { message: 'Успещная авторизация' };
   }
 
-  public test() {
-    return 'test';
-  }
-
   public logout(res: Response) {
     res.clearCookie('access_token', {
       httpOnly: true,

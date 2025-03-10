@@ -1,11 +1,7 @@
-import { Body, Controller, Get, HttpCode, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, HttpCode, Post, Res } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { Response } from 'express';
-import { JwtAuthGuard } from './guard/jwt-auth.guard';
-import { RoleGuard } from './guard/role.guard';
-import { RoleDecorator } from './decorators/role.decorator';
-import { Role } from './types/type';
 
 @Controller('auth')
 export class AuthController {
@@ -18,7 +14,7 @@ export class AuthController {
   }
 
   @Post('login')
-  @HttpCode(200)
+  @HttpCode(201)
   async login(@Body() body: { email: string; password: string }, @Res() res: Response) {
     const result = await this.authService.login(body.email, body.password, res);
     return res.json(result);
@@ -28,12 +24,5 @@ export class AuthController {
   logout(@Res() res: Response) {
     const result = this.authService.logout(res);
     return res.json(result);
-  }
-
-  @Get('test')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @RoleDecorator(Role.USER)
-  test() {
-    return this.authService.test();
   }
 }
