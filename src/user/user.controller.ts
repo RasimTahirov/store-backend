@@ -12,6 +12,16 @@ export class UserController {
     private readonly paginationService: PaginationService
   ) {}
 
+  @Get('products/man')
+  getLastManProduct() {
+    return this.userService.getLastManProduct();
+  }
+
+  @Get('products/woman')
+  getLastWomanProduct() {
+    return this.userService.getLastWomanProduct();
+  }
+
   @Get('data')
   @UseGuards(JwtAuthGuard)
   getUserData(@Req() req: Request) {

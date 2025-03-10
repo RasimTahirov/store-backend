@@ -6,6 +6,34 @@ import { PrismaService } from 'src/prisma/prisma.service';
 export class UserService {
   constructor(private readonly prismaService: PrismaService) {}
 
+  public async getLastManProduct() {
+    const product = await this.prismaService.product.findMany({
+      where: {
+        gender: 'MALE',
+      },
+      take: 5,
+      include: {
+        Category: true,
+      },
+    });
+
+    return product;
+  }
+
+  public async getLastWomanProduct() {
+    const product = await this.prismaService.product.findMany({
+      where: {
+        gender: 'FEMALE',
+      },
+      take: 5,
+      include: {
+        Category: true,
+      },
+    });
+
+    return product;
+  }
+
   public async getUserData(req: Request) {
     const user = await req.cookies['user'];
 
@@ -72,6 +100,8 @@ export class UserService {
         id: productId,
       },
     });
+
+    console.log('test');
 
     return product;
   }
