@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id String @id @default(uuid())
+
+  name     String
+  surname  String
+  email    String @unique
+  password String
+
+  role Role @default(USER)
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  Cart Cart[]
+
+  @@map("users")
+}
+
+model Category {
+  id String @id @default(uuid())
+
+  name   String
+  url    String @unique
+  gender Gender
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  products Product[]
+
+  @@map("categories")
+}
+
+enum Size {
+  XS
+  S
+  M
+  L
+  XL
+  XXL
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  UNISEX
+}
+
+model Product {
+  id String @id @default(uuid())
+
+  title       String
+  description String?
+  price       Float
+  size        Size
+  color       String
+  gender      Gender
+  images       String[]
+  compound    String
+  country     String
+  care        String
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  Category   Category @relation(fields: [categoryId], references: [id])
+  categoryId String
+
+  CartItem CartItem[]
+
+  @@map("products")
+}
+
+model Cart {
+  id        String  @id @default(uuid())
+  userId    String
+
+  user    User     @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  CartItem CartItem[]
+
+  @@map("carts")
+}
+
+model CartItem {
+  id        String @id @default(uuid())
+  cartId    String
+  productId String
+  quantity  Int    @default(1)
+
+  cart    Cart    @relation(fields: [cartId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("cart_items")
+}

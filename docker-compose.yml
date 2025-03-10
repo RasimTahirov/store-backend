@@ -13,9 +13,11 @@ services:
       - 5432:5432
     networks:
       - store-backend
+    restart: always
 
 volumes:
   postgres_data:
 
 networks:
   store-backend:
+    driver: bridge
