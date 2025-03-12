@@ -1,5 +1,6 @@
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-3.0.x"]
 }
 
 datasource db {
@@ -69,7 +70,7 @@ model Product {
   size        Size
   color       String
   gender      Gender
-  images       String[]
+  images      String[]
   compound    String
   country     String
   care        String
@@ -86,10 +87,10 @@ model Product {
 }
 
 model Cart {
-  id        String  @id @default(uuid())
-  userId    String
+  id     String @id @default(uuid())
+  userId String
 
-  user    User     @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
