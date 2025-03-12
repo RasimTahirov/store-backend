@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable } from '@nestjs/common';
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 import { Role } from 'src/auth/types/type';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { CreateProductDto } from './dto/createProduct.dto';
@@ -14,11 +14,7 @@ export class AdminService {
 
   public async getAllUser() {
     const user = await this.prismaService.user.findMany({
-      orderBy: [
-        {
-          createdAt: 'asc',
-        },
-      ],
+      orderBy: [{ createdAt: 'asc' }],
     });
 
     return user;
@@ -26,12 +22,10 @@ export class AdminService {
 
   public async upadtedRole(id: string, role: Role) {
     const user = await this.prismaService.user.findUnique({
-      where: {
-        id,
-      },
+      where: { id },
     });
 
-    if (!user) throw new BadRequestException('Пользователь не найден');
+    if (!user) throw new NotFoundException('Пользователь не найден');
 
     const update = await this.prismaService.user.update({
       where: { id },
@@ -43,17 +37,13 @@ export class AdminService {
 
   public async deleteUser(id: string) {
     const user = await this.prismaService.user.findUnique({
-      where: {
-        id,
-      },
+      where: { id },
     });
 
-    if (!user) throw new BadRequestException('Пользователь не найден');
+    if (!user) throw new NotFoundException('Пользователь не найден');
 
     await this.prismaService.user.delete({
-      where: {
-        id,
-      },
+      where: { id },
     });
 
     return { message: 'Пользователь удалён' };
@@ -116,14 +106,12 @@ export class AdminService {
   public async deleteProduct(id: string) {
     try {
       await this.prismaService.product.delete({
-        where: {
-          id,
-        },
+        where: { id },
       });
 
       return { message: 'Товар удалён' };
     } catch {
-      throw new BadRequestException('Товар не найден');
+      throw new NotFoundException('Товар не найден');
     }
   }
 }

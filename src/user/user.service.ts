@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { Request } from 'express';
 import { PrismaService } from 'src/prisma/prisma.service';
 
@@ -89,7 +89,7 @@ export class UserService {
       },
     });
 
-    if (!category) throw new BadRequestException('Категория не найдена');
+    if (!category) throw new NotFoundException('Категория не найдена');
 
     return category;
   }
@@ -101,7 +101,7 @@ export class UserService {
       },
     });
 
-    console.log('test');
+    if (!product) throw new NotFoundException('Товар не найден');
 
     return product;
   }
