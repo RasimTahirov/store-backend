@@ -8,8 +8,9 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { RegisterDto } from './dto/register.dto';
 import * as argon2 from 'argon2';
 import { JwtService } from '@nestjs/jwt';
-import { Response } from 'express';
+import { Request, Response } from 'express';
 import { ONE_MONTH } from './utils/date.utils';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -43,12 +44,12 @@ export class AuthService {
     return user;
   }
 
-  public async login(email: string, password: string, res: Response) {
-    const user = await this.prismaService.user.findUnique({ where: { email } });
+  public async login(dto: LoginDto, res: Response) {
+    const user = await this.prismaService.user.findUnique({ where: { email: dto.email } });
 
     if (!user) throw new UnauthorizedException('Неверный логин или пароль');
 
-    const existsPassword = await argon2.verify(user?.password, password);
+    const existsPassword = await argon2.verify(user?.password, dto.password);
 
     if (!existsPassword) throw new UnauthorizedException('Неверный логин или пароль');
 
@@ -74,17 +75,21 @@ export class AuthService {
     return { message: 'Успещная авторизация' };
   }
 
-  public logout(res: Response) {
-    res.clearCookie('access_token', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-    });
+  public logout(res: Response, req: Request) {
+    if (req.cookies.access_token) {
+      res.clearCookie('access_token', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+      });
 
-    res.clearCookie('user', {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-    });
+      res.clearCookie('user', {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+      });
 
-    return { message: 'Успешный выход' };
+      return { message: 'Успешный выход' };
+    } else {
+      throw new UnauthorizedException('Вы не авторизованы');
+    }
   }
 }
