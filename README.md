@@ -52,7 +52,7 @@ POSTGRES_PORT=5432 # Порт БД
 POSTGRES_PASSWORD='your-db-password' # Пароль для подключения БД
 POSTGRES_DB_NAME='your-db-name' # Имя БД
 ```
-Переменные S3. Сервис используется от [selectel.ru](https://selectel.ru/)
+> Переменные S3. Сервис используется от [selectel.ru](https://selectel.ru/)
 ```
 S3_ACCESS_KEY='your-s3-access-key' # Ключ доступа S3 хранилищу
 S3_SECRET_KEY='your-s3-secret-key' # Секретный ключ S3 хранилище
@@ -61,7 +61,7 @@ S3_BUCKET_NAME='your-s3-bucket-name' # Имя контейнера S3
 S3_ENDPOINT='https://s3.storage.selcloud.ru' # Адрес для подключения к S3
 S3_URL='your-s3-url' # URL для получения доступа к изображению
 ```
-Переменные [yokassa](https://yookassa.ru/developers/payment-acceptance/testing-and-going-live/testing)
+> Переменные [yokassa](https://yookassa.ru/developers/payment-acceptance/testing-and-going-live/testing)
 ```
 USERNAME_YOOKASSA='your-yookassa-username'  # Логин в yokassa
 SEKRET_KEY_YOOKASSA='your-yookassa-secret-key'  # Секретный ключ для yokassa
